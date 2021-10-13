@@ -35,14 +35,14 @@ public class CustomerController {
 	}
 
 	@PostMapping("/createCustomer")
-	public ResponseEntity<Customer> createMarsupial(@RequestBody Customer customer) {
+	public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer) {
 		Customer responseBody = this.service.createCustomer(customer);
 		ResponseEntity<Customer> response = new ResponseEntity<Customer>(responseBody, HttpStatus.CREATED);
 		return response;
 	}
 
 	@PutMapping("/updateCustomer/{id}")
-	public ResponseEntity<Customer> updateMarsupial(@RequestBody Customer customer, @PathVariable Integer id) {
+	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @PathVariable Integer id) {
 		Customer responseBody = this.service.updateCustomer(customer, id);
 		return new ResponseEntity<Customer>(responseBody, HttpStatus.ACCEPTED);
 	}

@@ -21,7 +21,7 @@ public class StaffService {
 		return this.repo.findById(id).get();
 	}
 
-	public List<Staff> getAllStaffs() {
+	public List<Staff> getAllStaff() {
 		return this.repo.findAll();
 	}
 

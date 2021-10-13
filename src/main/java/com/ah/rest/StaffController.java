@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ah.data.Staff;
 import com.ah.service.StaffService;
 
+@RestController
 public class StaffController {
+
 	private StaffService service;
 
 	public StaffController(StaffService service) {
@@ -22,27 +25,27 @@ public class StaffController {
 		this.service = service;
 	}
 
-	@GetMapping("getStaffById/{id}")
-	public Staff getStaffById(@PathVariable Integer id) {
-		return this.service.getStaffById(id);
-	}
-
-	@GetMapping("/getAllStaffs")
-	public List<Staff> getAllStaffs() {
-		return this.service.getAllStaffs();
-	}
-
 	@PostMapping("/createStaff")
-	public ResponseEntity<Staff> createMarsupial(@RequestBody Staff staff) {
+	public ResponseEntity<Staff> createStaff(@RequestBody Staff staff) {
 		Staff responseBody = this.service.createStaff(staff);
 		ResponseEntity<Staff> response = new ResponseEntity<Staff>(responseBody, HttpStatus.CREATED);
 		return response;
 	}
 
 	@PutMapping("/updateStaff/{id}")
-	public ResponseEntity<Staff> updateMarsupial(@RequestBody Staff staff, @PathVariable Integer id) {
+	public ResponseEntity<Staff> updateStaff(@RequestBody Staff staff, @PathVariable Integer id) {
 		Staff responseBody = this.service.updateStaff(staff, id);
 		return new ResponseEntity<Staff>(responseBody, HttpStatus.ACCEPTED);
+	}
+
+	@GetMapping("getStaffById/{id}")
+	public Staff getStaffById(@PathVariable Integer id) {
+		return this.service.getStaffById(id);
+	}
+
+	@GetMapping("/getAllStaff")
+	public List<Staff> getAllStaff() {
+		return this.service.getAllStaff();
 	}
 
 	@DeleteMapping("/removeStaff/{id}") // 204 - No content

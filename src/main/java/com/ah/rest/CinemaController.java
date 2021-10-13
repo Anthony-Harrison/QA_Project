@@ -26,14 +26,14 @@ public class CinemaController {
 	}
 
 	@PostMapping("/createCinema")
-	public ResponseEntity<Cinema> createMarsupial(@RequestBody Cinema cinema) {
+	public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) {
 		Cinema responseBody = this.service.createCinema(cinema);
 		ResponseEntity<Cinema> response = new ResponseEntity<Cinema>(responseBody, HttpStatus.CREATED);
 		return response;
 	}
 
 	@PutMapping("/updateCinema/{id}")
-	public ResponseEntity<Cinema> updateMarsupial(@RequestBody Cinema cinema, @PathVariable Integer id) {
+	public ResponseEntity<Cinema> updateCinema(@RequestBody Cinema cinema, @PathVariable Integer id) {
 		Cinema responseBody = this.service.updateCinema(cinema, id);
 		return new ResponseEntity<Cinema>(responseBody, HttpStatus.ACCEPTED);
 	}
