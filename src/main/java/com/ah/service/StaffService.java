@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ah.data.Staff;
 import com.ah.dto.StaffWithCinemaDTO;
+import com.ah.exception.StaffNotFoundException;
 import com.ah.repo.StaffRepo;
 
 @Service
@@ -34,7 +35,7 @@ public class StaffService {
 	}
 
 	public StaffWithCinemaDTO getStaffById(Integer id) {
-		return this.mapper.map(repo.findById(id).get(), StaffWithCinemaDTO.class);
+		return this.mapper.map(repo.findById(id).orElseThrow(StaffNotFoundException::new), StaffWithCinemaDTO.class);
 	}
 
 	public List<StaffWithCinemaDTO> getAllStaff() {
@@ -52,7 +53,7 @@ public class StaffService {
 
 	public Staff updateStaff(Staff staff, Integer id) {
 		Optional<Staff> optionalStaff = this.repo.findById(id);
-		Staff toUpdate = optionalStaff.get();
+		Staff toUpdate = optionalStaff.orElseThrow(StaffNotFoundException::new);
 		toUpdate.setName(staff.getName());
 		toUpdate.setCinema(staff.getCinema());
 
