@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -22,12 +23,14 @@ import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.ah.data.Cinema;
+import com.ah.dto.CinemaDTO;
+import com.ah.dto.StaffDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc // sets up the MockMVC object
-@Sql(scripts = { "classpath:cinema-schema.sql",
-		"classpath:cinema-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = { "classpath:table-schema.sql",
+		"classpath:data-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class CinemaControllerTest {
 
 	@Autowired // inject the MockMVC object into this class
@@ -38,9 +41,9 @@ public class CinemaControllerTest {
 
 	@Test
 	void testCreateCinema() throws Exception {
-		final Cinema testCinema = new Cinema(null, "Anths cinema", 6);
+		final Cinema testCinema = new Cinema(null, "Anths cinema", 6, null);
 		String testCinemaAsJson = this.mapper.writeValueAsString(testCinema);
-		final Cinema savedCinema = new Cinema(4, "Anths cinema", 6);
+		final Cinema savedCinema = new Cinema(4, "Anths cinema", 6, null);
 		String savedCinemaAsJson = this.mapper.writeValueAsString(savedCinema);
 
 		RequestBuilder request = post("/createCinema").contentType(MediaType.APPLICATION_JSON)
@@ -54,8 +57,9 @@ public class CinemaControllerTest {
 
 	@Test
 	void testGetAllCinemas() throws Exception {
-		String savedCinemaAsJSON = this.mapper.writeValueAsString(List.of(new Cinema(1, "Local place", 12),
-				new Cinema(2, "Far away", 15), new Cinema(3, "Very far away", 5)));
+		List<StaffDTO> staff = new ArrayList<>();
+		String savedCinemaAsJSON = this.mapper.writeValueAsString(List.of(new CinemaDTO(1, "Local place", 12, staff),
+				new CinemaDTO(2, "Far away", 15, staff), new CinemaDTO(3, "Very far away", 5, staff)));
 
 		RequestBuilder request = get("/getAllCinemas");
 
@@ -67,7 +71,8 @@ public class CinemaControllerTest {
 
 	@Test
 	void testGetCinemaById() throws Exception {
-		final Cinema savedCinema = new Cinema(3, "Very far away", 5);
+		List<StaffDTO> staff = new ArrayList<>();
+		final CinemaDTO savedCinema = new CinemaDTO(3, "Very far away", 5, staff);
 		String savedCinemaAsJSON = this.mapper.writeValueAsString(savedCinema);
 
 		RequestBuilder request = get("/getCinemaById/" + savedCinema.getId());
@@ -80,7 +85,8 @@ public class CinemaControllerTest {
 
 	@Test
 	void testUpdateCinema() throws Exception {
-		final Cinema testCinema = new Cinema(1, "Local place", 6);
+		List<StaffDTO> staff = new ArrayList<>();
+		final CinemaDTO testCinema = new CinemaDTO(1, "Local place", 6, staff);
 		final String testCinemaAsJSON = this.mapper.writeValueAsString(testCinema);
 
 		RequestBuilder request = put("/updateCinema/1").contentType(MediaType.APPLICATION_JSON)

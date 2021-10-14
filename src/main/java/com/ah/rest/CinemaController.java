@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ah.data.Cinema;
+import com.ah.dto.CinemaDTO;
 import com.ah.service.CinemaService;
 
 @RestController
@@ -28,8 +29,8 @@ public class CinemaController {
 	@PostMapping("/createCinema")
 	public ResponseEntity<Cinema> createCinema(@RequestBody Cinema cinema) {
 		Cinema responseBody = this.service.createCinema(cinema);
-		ResponseEntity<Cinema> response = new ResponseEntity<Cinema>(responseBody, HttpStatus.CREATED);
-		return response;
+		return new ResponseEntity<Cinema>(responseBody, HttpStatus.CREATED);
+
 	}
 
 	@PutMapping("/updateCinema/{id}")
@@ -39,12 +40,12 @@ public class CinemaController {
 	}
 
 	@GetMapping("getCinemaById/{id}")
-	public Cinema getCinemaById(@PathVariable Integer id) {
+	public CinemaDTO getCinemaById(@PathVariable Integer id) {
 		return this.service.getCinemaById(id);
 	}
 
 	@GetMapping("/getAllCinemas")
-	public List<Cinema> getAllCinemas() {
+	public List<CinemaDTO> getAllCinemas() {
 		return this.service.getAllCinemas();
 	}
 

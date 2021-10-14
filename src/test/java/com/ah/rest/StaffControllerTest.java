@@ -21,13 +21,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import com.ah.data.Cinema;
 import com.ah.data.Staff;
+import com.ah.dto.StaffWithCinemaDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc // sets up the MockMVC object
-@Sql(scripts = { "classpath:staff-schema.sql",
-		"classpath:staff-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = { "classpath:table-schema.sql",
+		"classpath:data-data.sql" }, executionPhase = ExecutionPhase.BEFORE_TEST_METHOD)
 public class StaffControllerTest {
 
 	@Autowired // inject the MockMVC object into this class
@@ -38,9 +40,10 @@ public class StaffControllerTest {
 
 	@Test
 	void testCreateStaff() throws Exception {
-		final Staff testStaff = new Staff(null, "Cee Cee");
+		Cinema cinema = new Cinema(4, "Test", 12);
+		final Staff testStaff = new Staff(null, "Cee Cee", cinema);
 		String testStaffAsJson = this.mapper.writeValueAsString(testStaff);
-		final Staff savedStaff = new Staff(3, "Cee Cee");
+		final Staff savedStaff = new Staff(3, "Cee Cee", cinema);
 		String savedStaffAsJson = this.mapper.writeValueAsString(savedStaff);
 
 		RequestBuilder request = post("/createStaff").contentType(MediaType.APPLICATION_JSON).content(testStaffAsJson);
@@ -54,7 +57,8 @@ public class StaffControllerTest {
 	@Test
 	void testGetAllStaff() throws Exception {
 		String savedStaffAsJSON = this.mapper
-				.writeValueAsString(List.of(new Staff(1, "Anthony Harrison"), new Staff(2, "Bill Bobble")));
+				.writeValueAsString(List.of(new StaffWithCinemaDTO(1, "Anthony Harrison", null, 0),
+						new StaffWithCinemaDTO(2, "Bill Bobble", null, 0)));
 
 		RequestBuilder request = get("/getAllStaff");
 
@@ -66,7 +70,7 @@ public class StaffControllerTest {
 
 	@Test
 	void testGetStaffById() throws Exception {
-		final Staff savedStaff = new Staff(2, "Bill Bobble");
+		final StaffWithCinemaDTO savedStaff = new StaffWithCinemaDTO(1, "Anthony Harrison", null, 0);
 		String savedStaffAsJSON = this.mapper.writeValueAsString(savedStaff);
 
 		RequestBuilder request = get("/getStaffById/" + savedStaff.getId());

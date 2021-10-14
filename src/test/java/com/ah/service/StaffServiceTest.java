@@ -2,6 +2,7 @@ package com.ah.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import com.ah.data.Cinema;
 import com.ah.data.Staff;
+import com.ah.dto.StaffWithCinemaDTO;
 import com.ah.repo.StaffRepo;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -55,22 +58,28 @@ public class StaffServiceTest {
 	@Test
 	void testGetById() {
 		final Integer id = 1;
-		final Staff staff = new Staff(id, "Anthony Harrison");
-
+		Cinema savedCinema = new Cinema(1, null, 0, null);
+		final Staff staff = new Staff(id, "Anthony Harrison", savedCinema);
+		StaffWithCinemaDTO check = this.service.mapDTO(staff);
 		Mockito.when(this.repo.findById(id)).thenReturn(Optional.of(staff));
 
-		assertThat(this.service.getStaffById(id)).isEqualTo(staff);
+		assertThat(this.service.getStaffById(id)).isEqualTo(check);
 
 		Mockito.verify(this.repo, Mockito.times(1)).findById(id);
 	}
 
 	@Test
 	void testGetAllStaff() {
-		final List<Staff> staffs = List.of(new Staff(1, "Anthony Harrison"), new Staff(2, "Bill Bobble"));
-
+		Cinema savedCinema = new Cinema(1, null, 0, null);
+		final List<Staff> staffs = List.of(new Staff(1, "Anthony Harrison", savedCinema),
+				new Staff(2, "Bill Bobble", savedCinema));
+		List<StaffWithCinemaDTO> check = new ArrayList<>();
+		for (Staff staff : staffs) {
+			check.add(this.service.mapDTO(staff));
+		}
 		Mockito.when(this.repo.findAll()).thenReturn(staffs);
 
-		assertThat(this.service.getAllStaff()).isEqualTo(staffs);
+		assertThat(this.service.getAllStaff()).isEqualTo(check);
 
 		Mockito.verify(this.repo, Mockito.times(1)).findAll();
 	}

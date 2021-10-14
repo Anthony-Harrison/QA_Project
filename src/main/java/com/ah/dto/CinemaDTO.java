@@ -1,38 +1,19 @@
-package com.ah.data;
+package com.ah.dto;
 
 import java.util.List;
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-@Entity
-public class Cinema {
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CinemaDTO {
 	private Integer id;
 	private String branch;
 	private int noOfScreens;
+	private List<StaffDTO> staff;
 
-	@OneToMany(mappedBy = "cinema")
-	private List<Staff> staff;
-
-	public Cinema() {
+	public CinemaDTO() {
 		super();
 	}
 
-	public Cinema(Integer id, String branch, int noOfScreens) {
-		super();
-		this.id = id;
-		this.branch = branch;
-		this.noOfScreens = noOfScreens;
-	}
-
-	public Cinema(Integer id, String branch, int noOfScreens, List<Staff> staff) {
+	public CinemaDTO(Integer id, String branch, int noOfScreens, List<StaffDTO> staff) {
 		super();
 		this.id = id;
 		this.branch = branch;
@@ -64,12 +45,17 @@ public class Cinema {
 		this.noOfScreens = noOfScreens;
 	}
 
-	public List<Staff> getStaff() {
+	public List<StaffDTO> getStaff() {
 		return staff;
 	}
 
-	public void setStaff(List<Staff> staff) {
+	public void setStaff(List<StaffDTO> staff) {
 		this.staff = staff;
+	}
+
+	@Override
+	public String toString() {
+		return "CinemaDTO [id=" + id + ", branch=" + branch + ", noOfScreens=" + noOfScreens + ", staff=" + staff + "]";
 	}
 
 	@Override
@@ -85,14 +71,9 @@ public class Cinema {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cinema other = (Cinema) obj;
+		CinemaDTO other = (CinemaDTO) obj;
 		return Objects.equals(branch, other.branch) && Objects.equals(id, other.id) && noOfScreens == other.noOfScreens
 				&& Objects.equals(staff, other.staff);
-	}
-
-	@Override
-	public String toString() {
-		return "Cinema [id=" + id + ", branch=" + branch + ", noOfScreens=" + noOfScreens + ", staff=" + staff + "]";
 	}
 
 }
