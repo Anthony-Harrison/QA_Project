@@ -1,29 +1,44 @@
 package com.ah.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.ah.data.Cinema;
+import com.ah.dto.CinemaDTO;
 import com.ah.repo.CinemaRepo;
 
 @Service
 public class CinemaService {
 
 	private CinemaRepo repo;
+	private ModelMapper mapper;
 
-	public CinemaService(CinemaRepo repo) {
+	public CinemaService(CinemaRepo repo, ModelMapper mapper) {
 		super();
 		this.repo = repo;
+		this.mapper = mapper;
 	}
 
-	public Cinema getCinemaById(Integer id) {
-		return this.repo.findById(id).get();
+	private CinemaDTO mapDTO(Cinema cinema) {
+		return this.mapper.map(cinema, CinemaDTO.class);
 	}
 
-	public List<Cinema> getAllCinemas() {
-		return this.repo.findAll();
+	public CinemaDTO getCinemaById(Integer id) {
+		Cinema saved = repo.findById(id).get();
+		return this.mapDTO(saved);
+	}
+
+	public List<CinemaDTO> getAllCinemas() {
+		List<Cinema> saved = repo.findAll();
+		List<CinemaDTO> toSend = new ArrayList<>();
+		for (Cinema cinema : saved) {
+			toSend.add(mapDTO(cinema));
+		}
+		return toSend;
 	}
 
 	public Cinema createCinema(Cinema cinema) {

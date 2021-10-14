@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ah.data.Staff;
+import com.ah.dto.StaffWithCinemaDTO;
 import com.ah.service.StaffService;
 
 @RestController
@@ -39,12 +40,12 @@ public class StaffController {
 	}
 
 	@GetMapping("getStaffById/{id}")
-	public Staff getStaffById(@PathVariable Integer id) {
+	public StaffWithCinemaDTO getStaffById(@PathVariable Integer id) {
 		return this.service.getStaffById(id);
 	}
 
 	@GetMapping("/getAllStaff")
-	public List<Staff> getAllStaff() {
+	public List<StaffWithCinemaDTO> getAllStaff() {
 		return this.service.getAllStaff();
 	}
 
