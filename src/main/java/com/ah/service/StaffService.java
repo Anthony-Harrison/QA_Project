@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.ah.data.Staff;
@@ -13,13 +14,15 @@ import com.ah.repo.StaffRepo;
 @Service
 public class StaffService {
 	private StaffRepo repo;
+	private ModelMapper mapper;
 
-	public StaffService(StaffRepo repo) {
+	public StaffService(StaffRepo repo, ModelMapper mapper) {
 		super();
 		this.repo = repo;
+		this.mapper = mapper;
 	}
 
-	private StaffWithCinemaDTO mapDTO(Staff staff) {
+	public StaffWithCinemaDTO mapDTO(Staff staff) {
 		StaffWithCinemaDTO dto = new StaffWithCinemaDTO();
 
 		dto.setName(staff.getName());
@@ -31,8 +34,7 @@ public class StaffService {
 	}
 
 	public StaffWithCinemaDTO getStaffById(Integer id) {
-		Staff found = this.repo.findById(id).get();
-		return this.mapDTO(found);
+		return this.mapper.map(repo.findById(id).get(), StaffWithCinemaDTO.class);
 	}
 
 	public List<StaffWithCinemaDTO> getAllStaff() {

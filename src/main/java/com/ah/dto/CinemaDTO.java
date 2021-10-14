@@ -1,6 +1,7 @@
 package com.ah.dto;
 
 import java.util.List;
+import java.util.Objects;
 
 public class CinemaDTO {
 	private Integer id;
@@ -10,6 +11,14 @@ public class CinemaDTO {
 
 	public CinemaDTO() {
 		super();
+	}
+
+	public CinemaDTO(Integer id, String branch, int noOfScreens, List<StaffDTO> staff) {
+		super();
+		this.id = id;
+		this.branch = branch;
+		this.noOfScreens = noOfScreens;
+		this.staff = staff;
 	}
 
 	public Integer getId() {
@@ -42,6 +51,29 @@ public class CinemaDTO {
 
 	public void setStaff(List<StaffDTO> staff) {
 		this.staff = staff;
+	}
+
+	@Override
+	public String toString() {
+		return "CinemaDTO [id=" + id + ", branch=" + branch + ", noOfScreens=" + noOfScreens + ", staff=" + staff + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(branch, id, noOfScreens, staff);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CinemaDTO other = (CinemaDTO) obj;
+		return Objects.equals(branch, other.branch) && Objects.equals(id, other.id) && noOfScreens == other.noOfScreens
+				&& Objects.equals(staff, other.staff);
 	}
 
 }

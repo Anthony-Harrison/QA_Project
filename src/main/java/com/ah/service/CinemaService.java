@@ -23,7 +23,7 @@ public class CinemaService {
 		this.mapper = mapper;
 	}
 
-	private CinemaDTO mapDTO(Cinema cinema) {
+	public CinemaDTO mapDTO(Cinema cinema) {
 		return this.mapper.map(cinema, CinemaDTO.class);
 	}
 

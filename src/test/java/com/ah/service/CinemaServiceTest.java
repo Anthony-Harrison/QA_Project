@@ -2,6 +2,7 @@ package com.ah.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.ah.data.Cinema;
+import com.ah.dto.CinemaDTO;
 import com.ah.repo.CinemaRepo;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -26,8 +28,8 @@ public class CinemaServiceTest {
 
 	@Test
 	void testCreateCinema() {
-		Cinema newCinema = new Cinema(null, "Cinema 1", 12);
-		Cinema savedCinema = new Cinema(4, "Cinema 1", 12);
+		Cinema newCinema = new Cinema(null, "Cinema 1", 12, null);
+		Cinema savedCinema = new Cinema(4, "Cinema 1", 12, null);
 		Mockito.when(this.repo.save(newCinema)).thenReturn(savedCinema);
 		assertThat(this.service.createCinema(newCinema).equals(savedCinema));
 
@@ -55,22 +57,26 @@ public class CinemaServiceTest {
 	@Test
 	void testGetById() {
 		final Integer id = 1;
-		final Cinema cinema = new Cinema(id, "Cinema 1", 12);
-
+		final Cinema cinema = new Cinema(id, "Cinema 1", 12, null);
+		CinemaDTO check = this.service.mapDTO(cinema);
 		Mockito.when(this.repo.findById(id)).thenReturn(Optional.of(cinema));
 
-		assertThat(this.service.getCinemaById(id)).isEqualTo(cinema);
+		assertThat(this.service.getCinemaById(id)).isEqualTo(check);
 
 		Mockito.verify(this.repo, Mockito.times(1)).findById(id);
 	}
 
 	@Test
 	void testGetAllCinemas() {
-		final List<Cinema> cinemas = List.of(new Cinema(4, "Cinema 1", 12), new Cinema(5, "Cinema 1", 12));
+		final List<Cinema> cinemas = List.of(new Cinema(4, "Cinema 1", 12, null));
 
+		List<CinemaDTO> check = new ArrayList<>();
+		for (Cinema cinema : cinemas) {
+			check.add(this.service.mapDTO(cinema));
+		}
 		Mockito.when(this.repo.findAll()).thenReturn(cinemas);
 
-		assertThat(this.service.getAllCinemas()).isEqualTo(cinemas);
+		assertThat(this.service.getAllCinemas()).isEqualTo(check);
 
 		Mockito.verify(this.repo, Mockito.times(1)).findAll();
 	}
