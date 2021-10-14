@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ah.data.Cinema;
 import com.ah.dto.CinemaDTO;
+import com.ah.exception.StaffNotFoundException;
 import com.ah.repo.CinemaRepo;
 
 @Service
@@ -28,7 +29,7 @@ public class CinemaService {
 	}
 
 	public CinemaDTO getCinemaById(Integer id) {
-		Cinema saved = repo.findById(id).get();
+		Cinema saved = repo.findById(id).orElseThrow(StaffNotFoundException::new);
 		return this.mapDTO(saved);
 	}
 
@@ -47,7 +48,7 @@ public class CinemaService {
 
 	public Cinema updateCinema(Cinema cinema, Integer id) {
 		Optional<Cinema> optionalCinema = this.repo.findById(id);
-		Cinema toUpdate = optionalCinema.get();
+		Cinema toUpdate = optionalCinema.orElseThrow(StaffNotFoundException::new);
 		toUpdate.setBranch(cinema.getBranch());
 		toUpdate.setNoOfScreens(cinema.getNoOfScreens());
 
