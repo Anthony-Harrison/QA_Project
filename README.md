@@ -28,6 +28,8 @@ o	Screenshots of your database to prove that data is being persisted.
 
 o	Screenshot of your test results, including coverage report.
 
+https://github.com/Anthony-Harrison/QA_Project/blob/main/Documentation/QA_Project.pdf
+Screenshots in the pdf.
 
 o	Link to Jira Board - You must add Richard as a collaborator also.
 
